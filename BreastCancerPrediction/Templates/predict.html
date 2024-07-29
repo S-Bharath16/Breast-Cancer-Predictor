@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Breast Cancer Prediction</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 70%;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result, .error {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .result {
+            color: #4CAF50;
+        }
+
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Breast Cancer Prediction</h1>
+        <form method="post" id="predictionForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="mean_radius">Mean Radius:</label>
+                <input type="text" id="mean_radius" name="mean_radius" required>
+            </div>
+            <div class="form-group">
+                <label for="mean_texture">Mean Texture:</label>
+                <input type="text" id="mean_texture" name="mean_texture" required>
+            </div>
+            <div class="form-group">
+                <label for="mean_perimeter">Mean Perimeter:</label>
+                <input type="text" id="mean_perimeter" name="mean_perimeter" required>
+            </div>
+            <div class="form-group">
+                <label for="mean_area">Mean Area:</label>
+                <input type="text" id="mean_area" name="mean_area" required>
+            </div>
+            <div class="form-group">
+                <label for="mean_smoothness">Mean Smoothness:</label>
+                <input type="text" id="mean_smoothness" name="mean_smoothness" required>
+            </div>
+            <!-- Add more input fields as needed -->
+            <button type="submit">Predict</button>
+        </form>
+        <div id="resultMessage">
+            {% if result %}
+                <div class="result">Prediction Result: {{ result }}</div>
+            {% endif %}
+            {% if error %}
+                <div class="error">Error: {{ error }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- JavaScript for client-side validation -->
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            let inputs = document.querySelectorAll('input');
+            let valid = true;
+
+            inputs.forEach(input => {
+                if (isNaN(input.value) || input.value.trim() === '') {
+                    valid = false;
+                    input.style.borderColor = '#f44336';
+                } else {
+                    input.style.borderColor = '#ccc';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
